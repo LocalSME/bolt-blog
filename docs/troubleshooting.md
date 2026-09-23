@@ -157,9 +157,9 @@ project → Deployments** — for a build that ran and failed, with the actual e
 log. If no new deployment shows up at all for the commit:
 
 - Confirm the project is still connected: **Settings → Build → Git repository** should
-  still show `CreativeDigitalGrowth/lovable-blog`.
+  still show `LocalSME/lovable-blog`.
 - Check the GitHub App installation itself — <https://github.com/settings/installations>
-  (or the organization equivalent under `CreativeDigitalGrowth`) — and confirm Cloudflare
+  (or the organization equivalent under `LocalSME`) — and confirm Cloudflare
   Workers & Pages is still installed with access to this repository, and check its
   **Advanced** tab for recent webhook deliveries and their response codes.
 - Confirm the push actually reached GitHub: `git log --oneline origin/main` should show
@@ -235,9 +235,9 @@ neither.
 
 ## CMS "View on Live Site" link 404s
 
-The link points at `https://creativedigitalgrowth.bolt.host/<slug>/` —
+The link points at `https://localsme.bolt.host/<slug>/` —
 one `blog/` short of the real URL,
-`https://creativedigitalgrowth.bolt.host/blog/<slug>/`.
+`https://localsme.bolt.host/blog/<slug>/`.
 
 **Cause.** Sveltia keeps only the **origin** of `site_url` when building preview links.
 From the bundle:
@@ -307,7 +307,7 @@ To settle it definitively, compare a clean build against the live sitemap:
 ```bash
 rm -rf dist .astro && npm run build
 find dist -name index.html | sed 's#^dist##; s#/index.html#/#' | sort > /tmp/local.txt
-curl -s https://creativedigitalgrowth.bolt.host/sitemap-0.xml   | grep -oE '<loc>[^<]*</loc>' | sed -E 's#</?loc>##g; s#https://creativedigitalgrowth.bolt.host##'   | sort > /tmp/live.txt
+curl -s https://localsme.bolt.host/sitemap-0.xml   | grep -oE '<loc>[^<]*</loc>' | sed -E 's#</?loc>##g; s#https://localsme.bolt.host##'   | sort > /tmp/live.txt
 diff /tmp/local.txt /tmp/live.txt
 ```
 
@@ -357,7 +357,7 @@ const { permissions } = await GET(`/repos/${owner}/${repo}`);
 if (!permissions?.pull) throw repository_no_access;
 ```
 
-(`owner`/`repo` here resolve to `CreativeDigitalGrowth`/`lovable-blog`, the values in
+(`owner`/`repo` here resolve to `LocalSME`/`lovable-blog`, the values in
 `public/admin/config.yml`'s `backend.repo`.)
 
 For a **public** repo GitHub returns the repository either way, but it only includes a
@@ -378,7 +378,7 @@ token with the `public_repo` scope, which works from any account with push acces
 
 ```bash
 read -rsp "Paste token (hidden): " T; echo
-curl -s -H "Authorization: Bearer $T"   https://api.github.com/repos/CreativeDigitalGrowth/lovable-blog   | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.message?'FAIL: '+j.message:'permissions: '+JSON.stringify(j.permissions))})"
+curl -s -H "Authorization: Bearer $T"   https://api.github.com/repos/LocalSME/lovable-blog   | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.message?'FAIL: '+j.message:'permissions: '+JSON.stringify(j.permissions))})"
 unset T
 ```
 
@@ -403,7 +403,7 @@ appear, which is the confusing part.
 Check the committed file:
 
 ```bash
-gh api repos/CreativeDigitalGrowth/lovable-blog/contents/src/content/blog/<slug>.md --jq '.content' | base64 -d | head
+gh api repos/LocalSME/lovable-blog/contents/src/content/blog/<slug>.md --jq '.content' | base64 -d | head
 ```
 
 If it says `draft: true`, untick **Draft** in the CMS and save again.
@@ -445,18 +445,18 @@ component rather than adding `inferSize` at the call site.
 Check what you actually have:
 
 ```bash
-gh api repos/CreativeDigitalGrowth/lovable-blog --jq '.permissions'
+gh api repos/LocalSME/lovable-blog --jq '.permissions'
 git status -sb
 git log --oneline origin/main..HEAD
 ```
 
-`"push": false` means read-only access — the local git credentials are `mohiseen-aumni`
-while the repository is owned by `CreativeDigitalGrowth`. Either be granted Write, or authenticate
-as the owner:
+`"push": false` means read-only access — the local git credentials are not the
+repository owner. `LocalSME` owns `LocalSME/lovable-blog`. Either be granted Write, or
+authenticate as the owner:
 
 ```bash
 gh auth login
-gh auth switch --user CreativeDigitalGrowth
+gh auth switch --user LocalSME
 ```
 
 Before any push into a repository that already has commits, confirm it is a

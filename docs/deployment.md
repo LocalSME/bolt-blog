@@ -1,46 +1,51 @@
 # Deployment
 
-> **Verified.** This page describes Bolt.new/bolt.host, which is what's actually live at
-> `creativedigitalgrowth.bolt.host` — not the Cloudflare Pages mechanism this page
-> described before (inherited unmodified from the template this repo was copied from,
-> `cloudflare-blog`). **Saving a post in the CMS does not update the live site by
-> itself** — see below.
+> **Not yet live.** This LocalSME fork has not itself been imported into Bolt.new or
+> published — there is no real Bolt.new project or bolt.host URL for it yet. This page
+> describes the Bolt.new/bolt.host mechanism this project is designed for (and the
+> behaviour confirmed on the project it was forked from), as reference for whoever sets
+> that up. It replaced the Cloudflare Pages mechanism this page described before
+> (inherited unmodified from the template this repo was copied from). **Once it's live,
+> remember: saving a post in the CMS does not update the live site by itself** — see
+> below.
 
-**GitHub repo:** `CreativeDigitalGrowth/lovable-blog` — public, pushed, what the CMS
-commits to. **Bolt.new project:** imported from that repo via the
-`https://bolt.new/~/github.com/CreativeDigitalGrowth/lovable-blog` URL, then published
-from Bolt's own editor to `https://creativedigitalgrowth.bolt.host`.
+**GitHub repo:** `LocalSME/lovable-blog` — public, pushed, what the CMS commits to.
+**Bolt.new project:** not yet created. Once one exists, it would be imported from this
+repo via a `https://bolt.new/~/github.com/LocalSME/lovable-blog` URL, then published
+from Bolt's own editor to whatever `<project>.bolt.host` URL Bolt assigns —
+`astro.config.mjs`, `public/admin/config.yml` and `public/robots.txt` would all need
+updating off the current `localsme.bolt.host` placeholder to match.
 
 ## How it works
 
 ```
-Confirmed:
-  bolt.new/~/github.com/CreativeDigitalGrowth/lovable-blog
+Expect this (confirmed on the project this was forked from):
+  bolt.new/~/github.com/LocalSME/lovable-blog
     └─ Bolt.new imports the repo into a WebContainer-based editor session
        └─ user clicks "Publish" inside Bolt's editor
           └─ Bolt builds and deploys the current in-editor workspace to
-             https://creativedigitalgrowth.bolt.host
+             the assigned <project>.bolt.host URL
 
-  Bolt.new → GitHub push-back is real, not just a one-time import snapshot:
-  minutes after import, a commit ("Updated package-lock.json", 2026-09-09 17:56,
-  authored as CreativeDigitalGrowth via GitHub's own committer identity) landed on
-  `main` reflecting an `npm install` Bolt ran inside its own WebContainer. Bolt
-  maintains a live, writable connection back to this GitHub repo.
+  Bolt.new → GitHub push-back is real, not just a one-time import snapshot: on the
+  project this was forked from, a commit ("Updated package-lock.json", authored via
+  GitHub's own committer identity for the account that owned that project) landed on
+  `main` within minutes of import, reflecting an `npm install` Bolt ran inside its own
+  WebContainer. Bolt maintains a live, writable connection back to the GitHub repo.
 
-Confirmed — the reverse direction does NOT auto-deploy:
+Expect this too — the reverse direction does NOT auto-deploy:
   git push to main from outside Bolt (e.g. a CMS save)
     └─ does NOT republish bolt.host by itself, unlike Cloudflare/Netlify's Git
-       integrations. Reproduced 2026-09-09: a CMS save landed as commit e432c0f
-       ("Create Post "test"") on GitHub within seconds, but the live site kept
-       showing only the original placeholder post with no new build triggered.
+       integrations. Reproduced on the project this was forked from: a CMS save landed
+       as a commit on GitHub within seconds, but the live site kept showing only the
+       previous content with no new build triggered.
     └─ the fix is to reopen the project in Bolt.new and click "Publish" again —
        that pulls the latest `main` into the editor session and republishes it
 ```
 
-**So publishing a CMS post is a two-step process here, unlike every other sibling**:
-save in the CMS (commits to `main`), then separately open Bolt.new and click Publish.
-There is no GitHub Actions workflow and no repository secrets involved in the Bolt path
-either way.
+**So publishing a CMS post will be a two-step process here, unlike every other
+sibling**: save in the CMS (commits to `main`), then separately open Bolt.new and click
+Publish. There is no GitHub Actions workflow and no repository secrets involved in the
+Bolt path either way.
 
 ### Why the npm `postbuild` hook matters
 
@@ -73,7 +78,7 @@ A smoke test against the live site is the check that actually matters — it tes
 visitors get rather than what the local build produced:
 
 ```bash
-B=https://creativedigitalgrowth.bolt.host
+B=https://localsme.bolt.host   # swap in the real <project>.bolt.host URL once one exists
 for p in "" "blog/" "about/" "contact/" "search/" "admin/" "rss.xml" "sitemap-index.xml" "pagefind/pagefind-ui.js"; do
   echo "$(curl -s -o /dev/null -w '%{http_code}' -L "$B/$p")  /$p"
 done
@@ -86,7 +91,7 @@ All should return `200`. Then confirm nothing leaked:
 curl -s -o /dev/null -w '%{http_code}\n' -L "$B/blog/<draft-slug>/"   # expect 404
 
 # no root-absolute internal references
-curl -s -L "$B/" | grep -ohE 'https?://[^"]+' | grep -v 'creativedigitalgrowth.bolt.host' | sort -u
+curl -s -L "$B/" | grep -ohE 'https?://[^"]+' | grep -v 'localsme.bolt.host' | sort -u
 ```
 
 ## Rollback
@@ -119,19 +124,19 @@ draft exclusion. Use `preview` before assuming a deploy will behave.
 
 Two independent access paths, not one.
 
-**GitHub.** Pushing requires write access to `CreativeDigitalGrowth/lovable-blog`.
+**GitHub.** Pushing requires write access to `LocalSME/lovable-blog`.
 Changing repository settings — Discussions, collaborators, and which GitHub Apps are
-installed — requires **admin**, held by `CreativeDigitalGrowth`. The `mohiseen-aumni`
+installed — requires **admin**, held by `LocalSME`. The `LocalSME`
 account has Write only — same pattern as the sibling GitHub Pages repo.
 
 ```bash
-gh api repos/CreativeDigitalGrowth/lovable-blog --jq '.permissions'
+gh api repos/LocalSME/lovable-blog --jq '.permissions'
 ```
 
-**Bolt.new.** Separately, whoever is signed into the Bolt.new account that imported and
-published this project controls what's actually live — republishing, and any build/env
-settings Bolt exposes. GitHub write access alone cannot make bolt.host redeploy if
-pushes turn out not to sync automatically (see above); Bolt account access alone cannot
-change what code exists in the GitHub repo unless that account also pushes back to it.
-Both matter, independently — and which Bolt.new account holds this project hasn't been
-recorded here yet.
+**Bolt.new.** Separately, once a project exists, whoever is signed into the Bolt.new
+account that imported and published it controls what's actually live — republishing,
+and any build/env settings Bolt exposes. GitHub write access alone cannot make bolt.host
+redeploy if pushes turn out not to sync automatically (see above); Bolt account access
+alone cannot change what code exists in the GitHub repo unless that account also pushes
+back to it. Both matter, independently — and which Bolt.new account will hold this
+project hasn't been decided yet.

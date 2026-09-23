@@ -1,19 +1,21 @@
 # Lovable Blog
 
 A static blog for a single author. Astro + TypeScript, Markdown content collections,
-Sveltia CMS at `/admin`, Pagefind search, Giscus comments. **Live at
-[creativedigitalgrowth.bolt.host](https://creativedigitalgrowth.bolt.host)**, hosted via
-Bolt.new — see [Status](#status) below.
+Sveltia CMS at `/admin`, Pagefind search, Giscus comments. Designed to be hosted via
+Bolt.new/bolt.host — but **this repo has not itself been imported into Bolt.new or
+published**; see [Status](#status) below.
 
 No server, no database, no tracking scripts, no cookie banner, no CSS framework. Three
 runtime dependencies. The only client-side JavaScript is a theme toggle, a copy-link
 button, the search page and the comment widget.
 
 Sibling projects, same feature set, each with independent content and git history and a
-deliberately different visual design: [`blog/`](../blog) (GitHub Pages),
-[`Gitlab-blog/`](../Gitlab-blog) (GitLab Pages), [`cloudflare blog/`](../cloudflare%20blog)
-(Cloudflare Pages), [`netlify-blog/`](../netlify-blog) (Netlify), [`vzero-blog/`](../vzero-blog)
-(Vercel via v0.app), [`firebase-blog/`](../firebase-blog) (Firebase Hosting).
+deliberately different visual design: [`localsme-blog/`](../localsme-blog) (GitHub Pages),
+[`localsme-gitlab-blog/`](../localsme-gitlab-blog) (GitLab Pages),
+[`localsme-cloudflare-blog/`](../localsme-cloudflare-blog) (Cloudflare Pages),
+[`localsme-netlify-blog/`](../localsme-netlify-blog) (Netlify),
+[`localsme-vzero-blog/`](../localsme-vzero-blog) (Vercel via v0.app),
+[`localsme-firebase-blog/`](../localsme-firebase-blog) (Firebase Hosting).
 
 ## Documentation
 
@@ -92,21 +94,20 @@ hardcode paths: every internal link still goes through [`src/lib/url.ts`](src/li
 To verify after any change, build and confirm every absolute URL points at this site:
 
 ```bash
-grep -rhoE 'https?://[^"< ]+' dist --include=*.html --include=*.xml   | grep -v 'creativedigitalgrowth.bolt.host' | sort -u
+grep -rhoE 'https?://[^"< ]+' dist --include=*.html --include=*.xml   | grep -v 'localsme.bolt.host' | sort -u
 ```
 
 ## Status
 
-This project was scaffolded from the sibling Cloudflare Pages blog's codebase on
-2026-09-09, with its own visual design, then imported into Bolt.new and published:
+This is a from-scratch LocalSME fork of a sibling project's codebase, with its own git
+history — see [`CLAUDE.md`](CLAUDE.md).
 
-- [x] GitHub repository created and pushed — public, `CreativeDigitalGrowth/lovable-blog`
-- [x] Hosted and live — imported into Bolt.new via the repo's GitHub URL, published to
-      `creativedigitalgrowth.bolt.host`. GitHub pushes do **not** keep it in sync by
-      themselves — every change needs a manual republish inside Bolt.new, see
-      [docs/deployment.md](docs/deployment.md)
-- [x] Site URL settled and `astro.config.mjs` / `public/admin/config.yml` / `robots.txt`
-      updated off the old `lovable-blog.example.com` placeholder
+- [x] GitHub repository created and pushed — public, `LocalSME/lovable-blog`
+- [ ] Not yet imported into Bolt.new or published. `astro.config.mjs`,
+      `public/admin/config.yml` and `robots.txt` currently point at the placeholder
+      domain `localsme.bolt.host` (this project family's brand-word.host-tld
+      convention) rather than a real Bolt.new project URL — update all three once one
+      exists, see [docs/setup.md](docs/setup.md#1-boltnew-import-and-publish)
 - [ ] CMS access token, Giscus IDs, contact form endpoint, author details in `src/consts.ts`
 
 The site also builds and runs locally (`npm run dev` / `npm run build` / `npm run

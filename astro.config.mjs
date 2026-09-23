@@ -6,8 +6,12 @@ import sitemap from '@astrojs/sitemap';
 // since bolt.host serves this project root. src/lib/url.ts still mediates every
 // internal link, so the site can move under a sub-path or onto a real domain later by
 // changing `site`/`base` here and nothing else.
+// `site` is a placeholder — `localsme.bolt.host` following this project family's
+// brand-word.host-tld naming convention. This fork has not itself been imported into
+// Bolt.new or published, so no real bolt.host project exists yet; correct this once
+// (if) one does.
 export default defineConfig({
-  site: 'https://creativedigitalgrowth.bolt.host',
+  site: 'https://localsme.bolt.host',
   trailingSlash: 'always',
   integrations: [
     sitemap({

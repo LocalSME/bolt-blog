@@ -1,22 +1,22 @@
 # One-time setup
 
 > **Partially rewritten.** Section 1 below now describes the Bolt.new import/publish
-> steps actually used, replacing the Cloudflare Pages Git-integration steps inherited
-> from the template this repo was copied from (`cloudflare-blog`). Some mechanics
-> (whether it stays in sync with GitHub) are still unverified — see the callout in
+> steps this project is designed around, replacing the Cloudflare Pages Git-integration
+> steps inherited from the template this repo was copied from. Some mechanics (whether
+> it stays in sync with GitHub) are still unverified — see the callout in
 > [deployment.md](deployment.md). Everything else on this page (CMS token, Giscus,
 > contact form, author details) still applies regardless of host.
 
 Everything on this page is done once. Sections degrade gracefully — missing pieces mean
 a notice or a fallback, not a broken build.
 
-The GitHub repository (`CreativeDigitalGrowth/lovable-blog`) is created, public and
-pushed. It's hosted live via Bolt.new.
+The GitHub repository (`LocalSME/lovable-blog`) is created, public and pushed. It is
+**not** yet hosted anywhere — see below.
 
 | Step | Status |
 | --- | --- |
 | Repository created and pushed | ✅ done |
-| Hosted and published (Bolt.new → bolt.host) | ✅ done |
+| Imported into Bolt.new and published | ❌ not done |
 | Fine-grained PAT for the CMS | ❌ not created |
 | Giscus comments | ❌ not configured |
 | Contact form endpoint | ❌ not set |
@@ -24,18 +24,22 @@ pushed. It's hosted live via Bolt.new.
 
 ---
 
-## 1. Bolt.new import and publish ✅
+## 1. Bolt.new import and publish ❌
 
-Done. This was a manual, one-time action taken directly in Bolt.new's own editor — not
-something a future reader needs to redo unless the project needs republishing — recorded
-here so it's clear what exists and where to find it.
+**Not done.** This fork has not been imported into Bolt.new or published — there is no
+real Bolt.new project for it yet. The steps below describe what that manual, one-time
+action looks like (confirmed on the project this was forked from), so whoever does it
+knows what to expect.
 
-The GitHub repo was opened in Bolt.new via the import URL
-`https://bolt.new/~/github.com/CreativeDigitalGrowth/lovable-blog`, which pulls the repo
-into a WebContainer-based editor session. From there, clicking **Publish** inside Bolt's
-editor built and deployed the project to `https://creativedigitalgrowth.bolt.host`.
+Open the GitHub repo in Bolt.new via the import URL
+`https://bolt.new/~/github.com/LocalSME/lovable-blog`, which pulls the repo into a
+WebContainer-based editor session. From there, clicking **Publish** inside Bolt's editor
+builds and deploys the project to whatever `<project>.bolt.host` domain Bolt assigns.
+Afterwards, update `astro.config.mjs`'s `site`, `public/admin/config.yml`'s
+`site_url`/`display_url`, and `public/robots.txt`'s `Sitemap:` line off the current
+`localsme.bolt.host` placeholder to match.
 
-Whether Bolt keeps this project synced to the GitHub repo (rebuilding automatically on
+Whether Bolt keeps a project synced to its GitHub repo (rebuilding automatically on
 every push, the way Cloudflare/Netlify's Git integrations do) or only reflects the state
 of the repo at import time is **unverified** — see
 [deployment.md](deployment.md#how-it-works). If a change pushed to GitHub doesn't show
@@ -45,9 +49,8 @@ Build/output/env settings, if Bolt.new exposes any as project settings rather th
 inferring them, haven't been located yet — see
 [deployment.md](deployment.md#whats-configurable-and-where).
 
-The live URL is <https://creativedigitalgrowth.bolt.host> — the standard
-`<project>.bolt.host` domain Bolt assigns on publish. Whether a custom domain can be
-attached, and how, is unconfirmed; see [§7 below](#7-optional-custom-domain).
+Whether a custom domain can be attached, and how, is unconfirmed; see
+[§7 below](#7-optional-custom-domain).
 
 ## 2. Access token for the CMS
 
@@ -62,7 +65,7 @@ Two kinds of token work, and which one you can use depends on **who owns the rep
 
 | Field | Value |
 | --- | --- |
-| Resource owner | `CreativeDigitalGrowth` |
+| Resource owner | `LocalSME` |
 | Repository access | **Only select repositories → `lovable-blog`** |
 | Repository permissions → **Contents** | **Read and write** |
 | Repository permissions → Metadata | Read-only (added automatically) |
@@ -95,7 +98,8 @@ strictly tighter. Prefer fine-grained when the owner account is available to you
 
 Whichever you use, commits are authored by the account that issued the token.
 
-Then open <https://creativedigitalgrowth.bolt.host/admin/>, choose
+Then open `<project>.bolt.host/admin/` (or `localhost:4321/admin/` locally — see
+[writing.md](writing.md)) once this fork is hosted somewhere, choose
 **"Sign In Using Access Token"** and paste it.
 
 > There is no "Sign In with GitHub" button on the login screen. It starts an OAuth flow
@@ -117,14 +121,14 @@ configured, post pages show a one-line notice instead of the widget — nothing 
 2. Open the **Discussions** tab and make sure a category exists. The default expected by
    `src/consts.ts` is **Announcements**; any category works as long as the names match.
 3. Install the app at <https://github.com/apps/giscus> and grant it access to
-   `CreativeDigitalGrowth/lovable-blog` **only**.
-4. Go to <https://giscus.app>, enter `CreativeDigitalGrowth/lovable-blog`, pick the
+   `LocalSME/lovable-blog` **only**.
+4. Go to <https://giscus.app>, enter `LocalSME/lovable-blog`, pick the
    category, and choose *Discussion title contains page pathname* for the mapping.
 5. Copy the generated `data-repo-id` and `data-category-id` into `src/consts.ts`:
 
 ```ts
 export const GISCUS = {
-  repo: 'CreativeDigitalGrowth/lovable-blog',
+  repo: 'LocalSME/lovable-blog',
   repoId: 'R_kg...',        // ← paste
   category: 'Announcements',
   categoryId: 'DIC_kw...',  // ← paste

@@ -37,7 +37,8 @@ src/
 └── styles/global.css        Design tokens + all styling
 public/
 ├── admin/                   Sveltia CMS (index.html + config.yml)
-├── favicon.svg              Theme-aware
+├── favicon.png              Browser-tab icon (cropped badge, 256×256)
+├── logo.png                 Header mark and apple-touch-icon (full badge, 600×600) — shared across the LocalSME siblings
 ├── robots.txt
 └── social-card.png          Default Open Graph image, 1200×630
 ```
@@ -63,7 +64,8 @@ IDs, the contact endpoint and social links.
 dynamic routes ahead of rest parameters, and in a static build every path is enumerated
 up front, so the two cannot silently collide.
 
-Post URLs read `https://creativedigitalgrowth.bolt.host/blog/<slug>/` —
+Post URLs read `https://localsme.bolt.host/blog/<slug>/` — a placeholder domain, since
+this fork has not itself been imported into Bolt.new or published (see `CLAUDE.md`) —
 the site root plus the collection's route. There's no `/blog/blog/<slug>/`-style
 doubling risk to design around here — this project is root-served the same way the
 sibling GitHub Pages user site is, just for a different reason.
@@ -128,7 +130,7 @@ To re-check after any change, build and confirm this prints nothing:
 
 ```bash
 npm run build
-grep -rhoE 'https?://[^"< ]+' dist --include=*.html | grep -v 'creativedigitalgrowth.bolt.host' | sort -u
+grep -rhoE 'https?://[^"< ]+' dist --include=*.html | grep -v 'localsme.bolt.host' | sort -u
 ```
 
 That's the full audit — every internal link, `srcset` entry and in-page anchor resolved

@@ -1,23 +1,28 @@
 # Working in this repository
 
 A solo-author static blog: Astro 7 + TypeScript. Structurally copied from the sibling
-Cloudflare Pages blog (`CreativeDigitalGrowth/cloudflare-blog`) on 2026-09-09 as this
-family's seventh member, alongside the GitHub Pages, GitLab Pages, Netlify, Vercel
-(`vzero-blog`) and Firebase Hosting siblings — not a mirror of any of them, no shared
-content, no shared git history. Full detail in
+Cloudflare Pages blog (`LocalSME/cloudflare-blog`) as this family's seventh member,
+alongside the GitHub Pages, GitLab Pages, Netlify, Vercel (`vzero-blog`) and Firebase
+Hosting siblings — not a mirror of any of them, no shared content, no shared git
+history. This is an independent LocalSME fork with its own fresh git history, cloned
+into its own directory rather than reusing the original working copy. Full detail in
 [`docs/architecture.md`](docs/architecture.md).
 
-**Hosting is Bolt.new/bolt.host**, decided after the fact — this repo was scaffolded and
-pushed to GitHub first, then imported into Bolt.new (via the `bolt.new/~/github.com/…`
-import URL) and published from there to `https://creativedigitalgrowth.bolt.host`. The
-working name "lovable-blog" reflects the platform the user originally asked about
-(lovable.dev), a prompt-first React/Vite app builder — that platform's own GitHub sync
-was never tried, since Bolt.new turned out to be the tool actually used. Bolt.new → GitHub push-back is confirmed real (it committed a `package-lock.json`
-update from its own `npm install` shortly after import), but **don't assume the reverse
-holds** — whether a `git push` made outside Bolt (e.g. a CMS save) gets pulled in and
-redeployed automatically, or needs a manual reopen-and-Publish inside Bolt, has not been
-verified; see [`docs/deployment.md`](docs/deployment.md) and check the live site after
-any change made outside Bolt's own editor.
+**Hosting is meant to be Bolt.new/bolt.host**, the same as the project this was forked
+from, but **this fork has not itself been imported into Bolt.new or published** —
+`astro.config.mjs`'s `site` (and the matching values in `public/admin/config.yml` and
+`public/robots.txt`) currently point at the placeholder domain `localsme.bolt.host`
+rather than a real project URL. The working name "lovable-blog" reflects the platform
+originally asked about (lovable.dev), a prompt-first React/Vite app builder — that
+platform's own GitHub sync was never tried, since Bolt.new turned out to be the tool
+actually used upstream.
+
+Expect this Bolt.new behaviour once/if this fork is imported and published (confirmed on
+the project it was forked from): Bolt.new → GitHub push-back is real — it commits a
+`package-lock.json` update from its own `npm install` shortly after import — but the
+reverse does **not** hold. A `git push` made outside Bolt (e.g. a CMS save) does **not**
+get pulled in and redeployed automatically; it needs a manual reopen-and-Publish inside
+Bolt's editor. See [`docs/deployment.md`](docs/deployment.md).
 
 ## Development
 
@@ -96,7 +101,7 @@ deploy. Republish manually in Bolt after every CMS save.
 ```bash
 npm run check    # expect 0 errors
 npm run build
-grep -rhoE 'https?://[^"< ]+' dist --include=*.html | grep -v 'creativedigitalgrowth.bolt.host' | sort -u
+grep -rhoE 'https?://[^"< ]+' dist --include=*.html | grep -v 'localsme.bolt.host' | sort -u
 ```
 
 The grep must print only genuinely external URLs (giscus, google maps, unpkg). If the
@@ -105,14 +110,15 @@ change is visible in a browser, verify with `npm run preview` rather than `npm r
 
 ## Deployment
 
-**Live via Bolt.new, manual republish required.** The GitHub repo was imported into
-Bolt.new, then published from Bolt's own editor to
-`https://creativedigitalgrowth.bolt.host`. Pushing to `main` — including a CMS save —
-does **not** trigger a rebuild by itself; someone has to reopen the Bolt.new project and
-click Publish again. See [`docs/deployment.md`](docs/deployment.md).
+**Not yet live.** This repo has not been imported into Bolt.new or published. Once it
+is: pushing to `main` — including a CMS save — will **not** trigger a rebuild by itself;
+someone has to reopen the Bolt.new project and click Publish again, the same manual
+republish behaviour confirmed on the project this was forked from. See
+[`docs/deployment.md`](docs/deployment.md).
 
-Local git authenticates as `mohiseen-aumni`, the same account used for every sibling —
-that account's access is unrelated to whoever controls the Bolt.new project itself.
+Local git authenticates as `LocalSME`, the same account used for every LocalSME
+sibling — that account's access would be unrelated to whoever controls the Bolt.new
+project itself, once one exists.
 
 ## Documentation
 
