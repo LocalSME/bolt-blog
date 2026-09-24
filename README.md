@@ -1,4 +1,4 @@
-# Lovable Blog
+# Bolt Blog
 
 A static blog for a single author. Astro + TypeScript, Markdown content collections,
 Sveltia CMS at `/admin`, Pagefind search, Giscus comments. Designed to be hosted via
@@ -102,7 +102,7 @@ grep -rhoE 'https?://[^"< ]+' dist --include=*.html --include=*.xml   | grep -v 
 This is a from-scratch LocalSME fork of a sibling project's codebase, with its own git
 history — see [`CLAUDE.md`](CLAUDE.md).
 
-- [x] GitHub repository created and pushed — public, `LocalSME/lovable-blog`
+- [x] GitHub repository created and pushed — public, `LocalSME/bolt-blog`
 - [ ] Not yet imported into Bolt.new or published. `astro.config.mjs`,
       `public/admin/config.yml` and `robots.txt` currently point at the placeholder
       domain `localsme.bolt.host` (this project family's brand-word.host-tld

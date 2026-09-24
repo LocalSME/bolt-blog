@@ -17,7 +17,7 @@
 
 backend:
   name: github
-  repo: LocalSME/lovable-blog
+  repo: LocalSME/bolt-blog
   branch: main
 
 # Commit straight to `branch` rather than opening editorial-workflow PRs.

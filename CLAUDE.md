@@ -12,10 +12,11 @@ into its own directory rather than reusing the original working copy. Full detai
 from, but **this fork has not itself been imported into Bolt.new or published** —
 `astro.config.mjs`'s `site` (and the matching values in `public/admin/config.yml` and
 `public/robots.txt`) currently point at the placeholder domain `localsme.bolt.host`
-rather than a real project URL. The working name "lovable-blog" reflects the platform
-originally asked about (lovable.dev), a prompt-first React/Vite app builder — that
+rather than a real project URL. Originally named `lovable-blog` after the platform
+first asked about (lovable.dev, a prompt-first React/Vite app builder) — that
 platform's own GitHub sync was never tried, since Bolt.new turned out to be the tool
-actually used upstream.
+actually used upstream. Renamed to `bolt-blog` to match the actual host, same pattern
+as the `firebase-blog` sibling's `Replit-blog` → `firebase-blog` rename.
 
 Expect this Bolt.new behaviour once/if this fork is imported and published (confirmed on
 the project it was forked from): Bolt.new → GitHub push-back is real — it commits a

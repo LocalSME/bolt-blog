@@ -10,7 +10,7 @@
 Everything on this page is done once. Sections degrade gracefully — missing pieces mean
 a notice or a fallback, not a broken build.
 
-The GitHub repository (`LocalSME/lovable-blog`) is created, public and pushed. It is
+The GitHub repository (`LocalSME/bolt-blog`) is created, public and pushed. It is
 **not** yet hosted anywhere — see below.
 
 | Step | Status |
@@ -32,7 +32,7 @@ action looks like (confirmed on the project this was forked from), so whoever do
 knows what to expect.
 
 Open the GitHub repo in Bolt.new via the import URL
-`https://bolt.new/~/github.com/LocalSME/lovable-blog`, which pulls the repo into a
+`https://bolt.new/~/github.com/LocalSME/bolt-blog`, which pulls the repo into a
 WebContainer-based editor session. From there, clicking **Publish** inside Bolt's editor
 builds and deploys the project to whatever `<project>.bolt.host` domain Bolt assigns.
 Afterwards, update `astro.config.mjs`'s `site`, `public/admin/config.yml`'s
@@ -66,7 +66,7 @@ Two kinds of token work, and which one you can use depends on **who owns the rep
 | Field | Value |
 | --- | --- |
 | Resource owner | `LocalSME` |
-| Repository access | **Only select repositories → `lovable-blog`** |
+| Repository access | **Only select repositories → `bolt-blog`** |
 | Repository permissions → **Contents** | **Read and write** |
 | Repository permissions → Metadata | Read-only (added automatically) |
 | Expiration | Set one. 90 days is a reasonable default |
@@ -121,14 +121,14 @@ configured, post pages show a one-line notice instead of the widget — nothing 
 2. Open the **Discussions** tab and make sure a category exists. The default expected by
    `src/consts.ts` is **Announcements**; any category works as long as the names match.
 3. Install the app at <https://github.com/apps/giscus> and grant it access to
-   `LocalSME/lovable-blog` **only**.
-4. Go to <https://giscus.app>, enter `LocalSME/lovable-blog`, pick the
+   `LocalSME/bolt-blog` **only**.
+4. Go to <https://giscus.app>, enter `LocalSME/bolt-blog`, pick the
    category, and choose *Discussion title contains page pathname* for the mapping.
 5. Copy the generated `data-repo-id` and `data-category-id` into `src/consts.ts`:
 
 ```ts
 export const GISCUS = {
-  repo: 'LocalSME/lovable-blog',
+  repo: 'LocalSME/bolt-blog',
   repoId: 'R_kg...',        // ← paste
   category: 'Announcements',
   categoryId: 'DIC_kw...',  // ← paste

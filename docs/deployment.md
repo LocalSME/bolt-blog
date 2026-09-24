@@ -9,9 +9,9 @@
 > remember: saving a post in the CMS does not update the live site by itself** — see
 > below.
 
-**GitHub repo:** `LocalSME/lovable-blog` — public, pushed, what the CMS commits to.
+**GitHub repo:** `LocalSME/bolt-blog` — public, pushed, what the CMS commits to.
 **Bolt.new project:** not yet created. Once one exists, it would be imported from this
-repo via a `https://bolt.new/~/github.com/LocalSME/lovable-blog` URL, then published
+repo via a `https://bolt.new/~/github.com/LocalSME/bolt-blog` URL, then published
 from Bolt's own editor to whatever `<project>.bolt.host` URL Bolt assigns —
 `astro.config.mjs`, `public/admin/config.yml` and `public/robots.txt` would all need
 updating off the current `localsme.bolt.host` placeholder to match.
@@ -20,7 +20,7 @@ updating off the current `localsme.bolt.host` placeholder to match.
 
 ```
 Expect this (confirmed on the project this was forked from):
-  bolt.new/~/github.com/LocalSME/lovable-blog
+  bolt.new/~/github.com/LocalSME/bolt-blog
     └─ Bolt.new imports the repo into a WebContainer-based editor session
        └─ user clicks "Publish" inside Bolt's editor
           └─ Bolt builds and deploys the current in-editor workspace to
@@ -124,13 +124,13 @@ draft exclusion. Use `preview` before assuming a deploy will behave.
 
 Two independent access paths, not one.
 
-**GitHub.** Pushing requires write access to `LocalSME/lovable-blog`.
+**GitHub.** Pushing requires write access to `LocalSME/bolt-blog`.
 Changing repository settings — Discussions, collaborators, and which GitHub Apps are
 installed — requires **admin**, held by `LocalSME`. The `LocalSME`
 account has Write only — same pattern as the sibling GitHub Pages repo.
 
 ```bash
-gh api repos/LocalSME/lovable-blog --jq '.permissions'
+gh api repos/LocalSME/bolt-blog --jq '.permissions'
 ```
 
 **Bolt.new.** Separately, once a project exists, whoever is signed into the Bolt.new

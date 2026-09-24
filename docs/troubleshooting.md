@@ -157,7 +157,7 @@ project → Deployments** — for a build that ran and failed, with the actual e
 log. If no new deployment shows up at all for the commit:
 
 - Confirm the project is still connected: **Settings → Build → Git repository** should
-  still show `LocalSME/lovable-blog`.
+  still show `LocalSME/bolt-blog`.
 - Check the GitHub App installation itself — <https://github.com/settings/installations>
   (or the organization equivalent under `LocalSME`) — and confirm Cloudflare
   Workers & Pages is still installed with access to this repository, and check its
@@ -357,7 +357,7 @@ const { permissions } = await GET(`/repos/${owner}/${repo}`);
 if (!permissions?.pull) throw repository_no_access;
 ```
 
-(`owner`/`repo` here resolve to `LocalSME`/`lovable-blog`, the values in
+(`owner`/`repo` here resolve to `LocalSME`/`bolt-blog`, the values in
 `public/admin/config.yml`'s `backend.repo`.)
 
 For a **public** repo GitHub returns the repository either way, but it only includes a
@@ -378,7 +378,7 @@ token with the `public_repo` scope, which works from any account with push acces
 
 ```bash
 read -rsp "Paste token (hidden): " T; echo
-curl -s -H "Authorization: Bearer $T"   https://api.github.com/repos/LocalSME/lovable-blog   | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.message?'FAIL: '+j.message:'permissions: '+JSON.stringify(j.permissions))})"
+curl -s -H "Authorization: Bearer $T"   https://api.github.com/repos/LocalSME/bolt-blog   | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.message?'FAIL: '+j.message:'permissions: '+JSON.stringify(j.permissions))})"
 unset T
 ```
 
@@ -403,7 +403,7 @@ appear, which is the confusing part.
 Check the committed file:
 
 ```bash
-gh api repos/LocalSME/lovable-blog/contents/src/content/blog/<slug>.md --jq '.content' | base64 -d | head
+gh api repos/LocalSME/bolt-blog/contents/src/content/blog/<slug>.md --jq '.content' | base64 -d | head
 ```
 
 If it says `draft: true`, untick **Draft** in the CMS and save again.
@@ -445,13 +445,13 @@ component rather than adding `inferSize` at the call site.
 Check what you actually have:
 
 ```bash
-gh api repos/LocalSME/lovable-blog --jq '.permissions'
+gh api repos/LocalSME/bolt-blog --jq '.permissions'
 git status -sb
 git log --oneline origin/main..HEAD
 ```
 
 `"push": false` means read-only access — the local git credentials are not the
-repository owner. `LocalSME` owns `LocalSME/lovable-blog`. Either be granted Write, or
+repository owner. `LocalSME` owns `LocalSME/bolt-blog`. Either be granted Write, or
 authenticate as the owner:
 
 ```bash

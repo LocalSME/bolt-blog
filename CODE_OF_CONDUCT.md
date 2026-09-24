@@ -1,6 +1,6 @@
 # Code of conduct
 
-Comments on this blog are [GitHub Discussions](https://github.com/LocalSME/lovable-blog/discussions).
+Comments on this blog are [GitHub Discussions](https://github.com/LocalSME/bolt-blog/discussions).
 They are public, attached to your GitHub account, and moderated by the blog's author.
 
 ## The short version
