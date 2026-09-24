@@ -1,20 +1,12 @@
 # Deployment
 
-> **Not yet live.** This LocalSME fork has not itself been imported into Bolt.new or
-> published — there is no real Bolt.new project or bolt.host URL for it yet. This page
-> describes the Bolt.new/bolt.host mechanism this project is designed for (and the
-> behaviour confirmed on the project it was forked from), as reference for whoever sets
-> that up. It replaced the Cloudflare Pages mechanism this page described before
-> (inherited unmodified from the template this repo was copied from). **Once it's live,
-> remember: saving a post in the CMS does not update the live site by itself** — see
-> below.
+> **Live** at <https://localsme.bolt.host>, imported and published via Bolt.new
+> 2026-09-24. **Saving a post in the CMS does not update the live site by itself** —
+> see below.
 
 **GitHub repo:** `LocalSME/bolt-blog` — public, pushed, what the CMS commits to.
-**Bolt.new project:** not yet created. Once one exists, it would be imported from this
-repo via a `https://bolt.new/~/github.com/LocalSME/bolt-blog` URL, then published
-from Bolt's own editor to whatever `<project>.bolt.host` URL Bolt assigns —
-`astro.config.mjs`, `public/admin/config.yml` and `public/robots.txt` would all need
-updating off the current `localsme.bolt.host` placeholder to match.
+**Bolt.new project:** imported from `https://bolt.new/~/github.com/LocalSME/bolt-blog`,
+published from Bolt's own editor to `localsme.bolt.host`.
 
 ## How it works
 
@@ -47,15 +39,35 @@ sibling**: save in the CMS (commits to `main`), then separately open Bolt.new an
 Publish. There is no GitHub Actions workflow and no repository secrets involved in the
 Bolt path either way.
 
-### Why the npm `postbuild` hook matters
+### Confirmed: Bolt's Publish does NOT run the `postbuild` Pagefind step
 
-Whatever builds this project needs to run `npm run build` rather than `astro build`
-directly, so the `postbuild` script fires: npm runs `pagefind --site dist` right after
-Astro finishes, and the search index ends up inside `dist/` before it gets published. No
-extra build step to configure, and no way to deploy a site whose search index is stale.
-Whether Bolt's Publish action actually runs the full `npm run build` (postbuild
-included) rather than just `astro build` has not been checked — if search ever comes up
-empty on the live site, start there.
+Checked 2026-09-24 after enabling `FEATURES.search`: `/pagefind/pagefind-ui.js` 404s on
+the live `localsme.bolt.host` site even though a local `npm run build` produces it fine.
+The same 404 was independently confirmed on `creativedigitalgrowth.bolt.host` (the
+sibling this repo was forked from, also Bolt-hosted) — this is a platform-wide Bolt.new
+limitation, not something specific to this repo, and not something a script change can
+fix from inside the repo (most likely: WebContainer's browser-sandboxed Node can't run
+Pagefind's compiled Rust binary, so the `postbuild` script silently never completes,
+regardless of whether the runner even reaches it).
+
+**Workaround in place: the Pagefind index is committed as a static asset.** Unlike
+`dist/`, `public/` is not gitignored and is what Astro copies verbatim into `dist/`
+during the (working) `astro build` step — no native binary execution required for that
+part. So `public/pagefind/` in this repo holds a pre-built snapshot of the index,
+regenerated and committed by hand:
+
+```
+npm run build                        # regenerates dist/pagefind from current content
+rm -rf public/pagefind
+cp -r dist/pagefind public/pagefind
+git add public/pagefind && git commit -m "Refresh Pagefind index" && git push
+```
+
+**This must be re-run and re-pushed before every Bolt Publish that adds/edits/removes a
+post**, in addition to the existing CMS-save → reopen-Bolt → Publish flow above —
+otherwise search results go stale (or, before the index existed at all, 404 outright).
+If Bolt's own build ever does manage to run `postbuild` successfully in the future, it
+would just overwrite this snapshot with an equally fresh one — harmless either way.
 
 ## What's configurable, and where
 

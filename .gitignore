@@ -23,4 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# pagefind index is generated into dist/ by the postbuild step
+# pagefind index is generated into dist/ by the postbuild step.
+# public/pagefind/ is NOT ignored: it's a committed snapshot of that same index,
+# needed because Bolt.new's Publish doesn't run postbuild — see docs/deployment.md.

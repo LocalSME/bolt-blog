@@ -24,8 +24,9 @@ export const DEFAULT_OG_IMAGE = '/social-card.png';
 export const FEATURES = {
   /** About page at /about/. Edit its prose in src/pages/about/[...slug].astro. */
   about: false,
-  /** Full-text search at /search/. Needs no configuration; works as soon as it is on. */
-  search: false,
+  /** Full-text search at /search/. On this Bolt.new-hosted repo the index must also be
+   *  refreshed in public/pagefind/ before each publish — see docs/deployment.md. */
+  search: true,
   /** Contact page at /contact/. Set CONTACT_FORM_ENDPOINT below for a working form. */
   contact: false,
 } as const;
